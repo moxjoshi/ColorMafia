@@ -1,0 +1,392 @@
+* {
+    touch-action: manipulation;
+    /* Globally prevent double-tap zoom */
+}
+
+:root {
+    --bg-color: #000000;
+    --grid-bg: #888888;
+    /* Slightly lighter for grid lines to show through gap */
+    --cell-bg: #111111;
+    /* Very dark grey, almost black */
+    --red-player: #FD5F5B;
+    --blue-player: #08C3F0;
+    --red-bg: #F79977;
+    --blue-bg: #63ADD0;
+    --cell-bg: #FFEBD2;
+    /* Default board color */
+    --red-cell-bg: #FFCBC7;
+    --blue-cell-bg: #A9E3EF;
+    --text-color: #ffffff;
+    --font-main: 'Fredoka', sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    transition: background-color 0.8s ease;
+    /* Smooth background transition */
+    touch-action: manipulation;
+    /* Prevent double-tap zoom */
+}
+
+/* Dynamic Background Classes */
+body.turn-red {
+    background-color: var(--red-bg);
+}
+
+body.turn-blue {
+    background-color: var(--blue-bg);
+}
+
+/* Screen Management */
+.screen {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    max-width: 500px;
+    transition: opacity 0.5s ease;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Start Screen Styles */
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    align-items: center;
+}
+
+.menu-btn {
+    background: transparent;
+    color: var(--text-color);
+    border: 2px solid var(--text-color);
+    padding: 20px 40px;
+    width: 80%;
+    font-family: inherit;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+}
+
+.menu-btn:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+    transform: translateY(-3px);
+}
+
+.menu-btn i {
+    font-size: 1.5rem;
+}
+
+footer {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+.contact-link {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+    border-bottom: 1px solid transparent;
+}
+
+.contact-link:hover {
+    opacity: 1;
+    border-bottom: 1px solid var(--text-color);
+}
+
+.socials {
+    display: flex;
+    gap: 25px;
+    margin-top: 10px;
+}
+
+.social-link {
+    color: var(--text-color);
+    text-decoration: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.social-link:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+/* Game Screen Styles */
+.game-title {
+    font-size: 2rem;
+    /* Slightly smaller on game screen */
+    margin-bottom: 10px;
+}
+
+#homeBtn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 2rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+#homeBtn:hover {
+    opacity: 1;
+}
+
+header h1 {
+    font-weight: 600;
+    font-size: 2.5rem;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--text-color);
+}
+
+.turn-indicator {
+    display: none;
+    /* Removed as requested */
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 3px;
+    /* Increased spacing between cells */
+    background-color: transparent;
+    /* Remove container bg to let body bg show through gaps */
+    width: 320px;
+    height: 320px;
+    padding: 10px;
+}
+
+.cell {
+    background-color: var(--cell-bg);
+    border-radius: 12px;
+    /* Rounded corners */
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #333;
+    /* Subtle border */
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s ease, background-color 0.4s ease;
+}
+
+.cell:hover {
+    transform: scale(1.05);
+    /* Interactive hover */
+    border-color: #555;
+}
+
+/* Player Circle Container */
+.player-circle {
+    width: 85%;
+    height: 85%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Orb Styling */
+.orb {
+    width: 10px;
+    /* Slightly smaller to fit in circle */
+    height: 10px;
+    border-radius: 50%;
+    position: absolute;
+    background-color: #ffffff !important;
+    /* White dots */
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.orb-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Dot Positions - Increased spacing */
+/* 1 dot: Center */
+.orb.count-1 {
+    transform: scale(1.2);
+}
+
+/* 2 dots: Left-Right */
+.orb.count-2-1 {
+    transform: translate(-10px, 0);
+}
+
+.orb.count-2-2 {
+    transform: translate(10px, 0);
+}
+
+/* 3 dots: Triangle */
+.orb.count-3-1 {
+    transform: translate(0, -12px);
+}
+
+.orb.count-3-2 {
+    transform: translate(-10px, 8px);
+}
+
+.orb.count-3-3 {
+    transform: translate(10px, 8px);
+}
+
+/* 4 dots (Explosion Preparation) */
+/* Moving them further out to signify instability/fullness */
+.orb.count-4-1 {
+    transform: translate(0, -14px);
+}
+
+.orb.count-4-2 {
+    transform: translate(-14px, 0);
+}
+
+.orb.count-4-3 {
+    transform: translate(14px, 0);
+}
+
+.orb.count-4-4 {
+    transform: translate(0, 14px);
+}
+
+
+.controls {
+    display: flex;
+    gap: 20px;
+    /* Add space between buttons */
+    justify-content: center;
+    width: 100%;
+}
+
+.controls .btn {
+    background: transparent;
+    color: var(--text-color);
+    border: 2px solid var(--text-color);
+    padding: 12px 25px;
+    /* Compact padding */
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    outline: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.controls .btn:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+    transform: translateY(-2px);
+}
+
+.controls select {
+    background: var(--bg-color);
+    color: var(--text-color);
+    border: 2px solid var(--text-color);
+    padding: 12px 30px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 12px;
+    /* Less rounded (was 50px) */
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+/* Winner Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: transparent;
+    color: var(--text-color);
+    padding: 40px;
+    text-align: center;
+    border-radius: 20px;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-content h2 {
+    font-size: 3rem;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    text-shadow: 0 0 20px currentColor;
+    /* Glow effect */
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
