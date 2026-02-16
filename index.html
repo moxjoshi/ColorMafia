@@ -15,8 +15,10 @@
 </head>
 
 <body>
-    <!-- Start Screen -->
     <div id="startScreen" class="screen">
+        <button id="rulesBtn" class="glass-btn question-mark" aria-label="How to Play">
+            <i class="fa-solid fa-question"></i>
+        </button>
         <header>
             <h1>Color Mafia</h1>
             <p>Built by <b>Moksh Joshi</b></p>
@@ -63,6 +65,27 @@
     <div id="winnerModal" class="modal hidden">
         <div class="modal-content">
             <h2 id="winnerText">RED WINS!</h2>
+        </div>
+    </div>
+
+    <div id="rulesModal" class="modal hidden">
+        <div class="modal-content glass-panel">
+            <button id="closeRulesBtn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            <h2>How to Play</h2>
+            <div class="rules-text">
+                <p><strong>Objective:</strong> Eliminate all opponent's orbs to win.</p>
+                <h3>Rules:</h3>
+                <ul>
+                    <li><strong>Turn-Based:</strong> Players take turns placing orbs on valid cells.</li>
+                    <li><strong>Placement:</strong> You can only place orbs on empty cells or cells you already own.
+                    </li>
+                    <li><strong>Explosions:</strong> When a cell reaches critical mass (4 orbs), it explodes!</li>
+                    <li><strong>Chain Reaction:</strong> Exploding orbs fly to adjacent cells, adding an orb and
+                        claiming them for you.</li>
+                    <li><strong>Grid:</strong> The game is played on a 5x5 grid.</li>
+                </ul>
+                <p><em>Strategy Tip: Plan your chain reactions to wipe out the enemy!</em></p>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
