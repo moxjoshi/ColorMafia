@@ -169,6 +169,11 @@ footer {
     opacity: 1;
 }
 
+header {
+    position: relative;
+    width: 100%;
+}
+
 header h1 {
     font-weight: 600;
     font-size: 2.5rem;
@@ -176,6 +181,35 @@ header h1 {
     text-transform: uppercase;
     letter-spacing: 4px;
     color: var(--text-color);
+}
+
+.question-mark {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.question-mark:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.question-mark i {
+    font-size: 1.2rem;
 }
 
 .turn-indicator {
@@ -389,4 +423,71 @@ header h1 {
         transform: scale(1);
         opacity: 1;
     }
+}
+
+/* Glass Panel Styles */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Rules Modal Specifics */
+#rulesModal .modal-content {
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    text-align: left;
+    max-height: 80vh;
+    overflow-y: auto;
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+#rulesModal .modal-content::-webkit-scrollbar {
+    display: none;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.close-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.rules-text {
+    margin-top: 20px;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.rules-text h3 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 5px;
+}
+
+.rules-text ul {
+    padding-left: 20px;
+}
+
+.rules-text li {
+    margin-bottom: 8px;
 }
