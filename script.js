@@ -1,16 +1,15 @@
 const rows = 5;
 const cols = 5;
 let board = [];
-let currentPlayer = 'red'; // 'red' or 'blue'
+let currentPlayer = 'red';
 let isAnimating = false;
-let gameMode = 'pvp'; // 'pvp' or 'pve'
+let gameMode = 'pvp';
 let players = {
     'red': { color: '#FD5F5B', name: "RED", bgClass: 'turn-red', cellBg: '#FFCBC7' },
     'blue': { color: '#08C3F0', name: "BLUE", bgClass: 'turn-blue', cellBg: '#A9E3EF' }
 };
 
 const boardElement = document.getElementById('board');
-// turnIndicator element is removed/hidden, logic updated to change body bg
 const restartBtn = document.getElementById('restartBtn');
 const homeBtn = document.getElementById('homeBtn');
 const startScreen = document.getElementById('startScreen');
@@ -19,7 +18,6 @@ const rulesBtn = document.getElementById('rulesBtn');
 const rulesModal = document.getElementById('rulesModal');
 const closeRulesBtn = document.getElementById('closeRulesBtn');
 
-// Start Game from Menu
 window.startGame = function (mode) {
     gameMode = mode;
     startScreen.classList.add('hidden');
@@ -30,18 +28,14 @@ window.startGame = function (mode) {
 function showStartScreen() {
     gameScreen.classList.add('hidden');
     startScreen.classList.remove('hidden');
-    // Reset background to default black (or keep transition)
     document.body.className = '';
 }
 
-// Initialize Game
 function initGame() {
     isAnimating = false;
     board = [];
     boardElement.innerHTML = '';
 
-    // In PvE, Player is always Red, Bot is Blue. Red starts?
-    // User didn't specify, but usually player goes first or random.
     currentPlayer = Math.random() < 0.5 ? 'red' : 'blue';
 
     updateTurnIndicator();
@@ -68,14 +62,12 @@ function initGame() {
         board.push(row);
     }
 
-    // If Bot starts (Bot is Blue now), trigger bot move
     if (gameMode === 'pve' && currentPlayer === 'blue') {
         setTimeout(makeBotMove, 1000);
     }
 }
 
 function updateTurnIndicator() {
-    // Change Background Color
     document.body.className = players[currentPlayer].bgClass;
 }
 
@@ -84,18 +76,15 @@ function renderBoard() {
         for (let c = 0; c < cols; c++) {
             let cell = board[r][c];
             let cellDiv = document.querySelector(`.cell[data-r='${r}'][data-c='${c}']`);
-            cellDiv.innerHTML = ''; // Clear current content
+            cellDiv.innerHTML = '';
 
             if (cell.dots > 0) {
-                // Set background color of the cell
                 cellDiv.style.backgroundColor = players[cell.owner].cellBg;
 
-                // Create Player Circle
                 let circle = document.createElement('div');
                 circle.className = 'player-circle';
                 circle.style.backgroundColor = players[cell.owner].color;
 
-                // Add dots to the circle
                 let displayDots = cell.dots > 4 ? 4 : cell.dots;
 
                 for (let i = 1; i <= displayDots; i++) {
@@ -105,26 +94,20 @@ function renderBoard() {
                     else if (displayDots === 3) dot.className = `orb count-3-${i}`;
                     else dot.className = `orb count-4-${i}`;
 
-                    // Dot color is handled by CSS (white)
                     circle.appendChild(dot);
                 }
 
                 cellDiv.appendChild(circle);
 
-                // Remove border from cell, as the circle indicates ownership now?
-                // User said "Inside every box...", "Live with pre-made circle".
-                // We'll keep the cell clean (no border) or minimal.
                 cellDiv.style.border = 'none';
             } else {
-                // Reset to default empty cell
-                cellDiv.style.backgroundColor = ''; // Reverts to CSS default (var(--cell-bg))
-                cellDiv.style.border = '2px solid #ccc'; // Softer border for empty cells
+                cellDiv.style.backgroundColor = '';
+                cellDiv.style.border = '2px solid #ccc';
             }
         }
     }
 }
 
-// Check if current player has any orbs on the board
 function hasOrbs(player) {
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
@@ -134,17 +117,14 @@ function hasOrbs(player) {
     return false;
 }
 
-// Handle Click
 async function handleCellClick(r, c) {
     if (isAnimating) return;
 
-    // If it's Bot's turn (Blue) and User clicks -> IGNORE
     if (gameMode === 'pve' && currentPlayer === 'blue') return;
 
     await processMove(r, c);
 }
 
-// Separate Logic Process for Reuse by Bot
 async function processMove(r, c) {
     let cell = board[r][c];
     let playerHasOrbs = hasOrbs(currentPlayer);
@@ -160,7 +140,6 @@ async function processMove(r, c) {
 
     let unstable = true;
     while (unstable) {
-        // Check win state before processing further explosions
         if (checkWinConditionMet(true)) {
             isAnimating = false;
             return;
@@ -183,18 +162,15 @@ async function processMove(r, c) {
         }
     }
 
-    // Final Win Check
     if (checkWinConditionMet(true)) {
         isAnimating = false;
         return;
     }
 
-    // Switch Turn
     currentPlayer = currentPlayer === 'red' ? 'blue' : 'red';
     updateTurnIndicator();
     isAnimating = false;
 
-    // Trigger Bot if it's Blue's turn now
     if (gameMode === 'pve' && currentPlayer === 'blue') {
         setTimeout(makeBotMove, 1000);
     }
@@ -208,7 +184,6 @@ function makeBotMove() {
     let validMoves = [];
     let hasOwnOrbs = hasOrbs('blue');
 
-    // 1. Identify all valid moves
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
             if (!hasOwnOrbs) {
@@ -228,13 +203,11 @@ function makeBotMove() {
         return;
     }
 
-    // 2. Score each move
     let bestMove = null;
     let bestScore = -Infinity;
 
     for (let move of validMoves) {
         let score = evaluateMove(move.r, move.c);
-        // Add a tiny bit of randomness to break ties and make it feel less robotic
         score += Math.random() * 5;
 
         if (score > bestScore) {
@@ -243,7 +216,6 @@ function makeBotMove() {
         }
     }
 
-    // 3. Execute best move
     if (bestMove) {
         processMove(bestMove.r, bestMove.c);
     }
@@ -253,8 +225,6 @@ function evaluateMove(r, c) {
     let cell = board[r][c];
     let score = 0;
 
-    // Feature 1: Will this move cause an explosion?
-    // Capacity is fixed at 4 for all cells now.
     let willExplode = (cell.dots + 1) >= 4;
 
     if (willExplode) {
@@ -392,7 +362,7 @@ function checkWinConditionMet(showWinnerAlert = true) {
 
 function showWinModal(winner) {
     winnerText.textContent = `${players[winner].name} WINS!`;
-    winnerText.style.color = players[winner].color; // Set text color to winner's color
+    winnerText.style.color = players[winner].color;
     winnerModal.classList.remove('hidden');
 
     setTimeout(() => {
@@ -404,7 +374,6 @@ function showWinModal(winner) {
 restartBtn.addEventListener('click', initGame);
 homeBtn.addEventListener('click', showStartScreen);
 
-// Rules Modal Event Listeners
 rulesBtn.addEventListener('click', () => {
     rulesModal.classList.remove('hidden');
 });
@@ -426,4 +395,5 @@ document.addEventListener('touchend', function (event) {
         event.preventDefault();
     }
     lastTouchEnd = now;
+
 }, false);
