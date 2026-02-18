@@ -1,20 +1,16 @@
 * {
     touch-action: manipulation;
-    /* Globally prevent double-tap zoom */
 }
 
 :root {
     --bg-color: #000000;
     --grid-bg: #888888;
-    /* Slightly lighter for grid lines to show through gap */
     --cell-bg: #111111;
-    /* Very dark grey, almost black */
     --red-player: #FD5F5B;
     --blue-player: #08C3F0;
     --red-bg: #F79977;
     --blue-bg: #63ADD0;
     --cell-bg: #FFEBD2;
-    /* Default board color */
     --red-cell-bg: #FFCBC7;
     --blue-cell-bg: #A9E3EF;
     --text-color: #ffffff;
@@ -33,12 +29,9 @@ body {
     height: 100vh;
     overflow: hidden;
     transition: background-color 0.8s ease;
-    /* Smooth background transition */
     touch-action: manipulation;
-    /* Prevent double-tap zoom */
 }
 
-/* Dynamic Background Classes */
 body.turn-red {
     background-color: var(--red-bg);
 }
@@ -47,7 +40,6 @@ body.turn-blue {
     background-color: var(--blue-bg);
 }
 
-/* Screen Management */
 .screen {
     text-align: center;
     display: flex;
@@ -63,7 +55,6 @@ body.turn-blue {
     display: none !important;
 }
 
-/* Start Screen Styles */
 .menu-buttons {
     display: flex;
     flex-direction: column;
@@ -145,10 +136,8 @@ footer {
     transform: translateY(-2px);
 }
 
-/* Game Screen Styles */
 .game-title {
     font-size: 2rem;
-    /* Slightly smaller on game screen */
     margin-bottom: 10px;
 }
 
@@ -214,7 +203,6 @@ header h1 {
 
 .turn-indicator {
     display: none;
-    /* Removed as requested */
 }
 
 .board {
@@ -222,9 +210,7 @@ header h1 {
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, 1fr);
     gap: 3px;
-    /* Increased spacing between cells */
     background-color: transparent;
-    /* Remove container bg to let body bg show through gaps */
     width: 320px;
     height: 320px;
     padding: 10px;
@@ -233,24 +219,20 @@ header h1 {
 .cell {
     background-color: var(--cell-bg);
     border-radius: 12px;
-    /* Rounded corners */
     position: relative;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 2px solid #333;
-    /* Subtle border */
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s ease, background-color 0.4s ease;
 }
 
 .cell:hover {
     transform: scale(1.05);
-    /* Interactive hover */
     border-color: #555;
 }
 
-/* Player Circle Container */
 .player-circle {
     width: 85%;
     height: 85%;
@@ -263,15 +245,12 @@ header h1 {
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Orb Styling */
 .orb {
     width: 10px;
-    /* Slightly smaller to fit in circle */
     height: 10px;
     border-radius: 50%;
     position: absolute;
     background-color: #ffffff !important;
-    /* White dots */
     transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -284,13 +263,10 @@ header h1 {
     align-items: center;
 }
 
-/* Dot Positions - Increased spacing */
-/* 1 dot: Center */
 .orb.count-1 {
     transform: scale(1.2);
 }
 
-/* 2 dots: Left-Right */
 .orb.count-2-1 {
     transform: translate(-10px, 0);
 }
@@ -299,7 +275,6 @@ header h1 {
     transform: translate(10px, 0);
 }
 
-/* 3 dots: Triangle */
 .orb.count-3-1 {
     transform: translate(0, -12px);
 }
@@ -312,8 +287,6 @@ header h1 {
     transform: translate(10px, 8px);
 }
 
-/* 4 dots (Explosion Preparation) */
-/* Moving them further out to signify instability/fullness */
 .orb.count-4-1 {
     transform: translate(0, -14px);
 }
@@ -334,7 +307,6 @@ header h1 {
 .controls {
     display: flex;
     gap: 20px;
-    /* Add space between buttons */
     justify-content: center;
     width: 100%;
 }
@@ -344,7 +316,6 @@ header h1 {
     color: var(--text-color);
     border: 2px solid var(--text-color);
     padding: 12px 25px;
-    /* Compact padding */
     font-family: inherit;
     font-size: 0.9rem;
     cursor: pointer;
@@ -375,12 +346,10 @@ header h1 {
     text-transform: uppercase;
     letter-spacing: 1px;
     border-radius: 12px;
-    /* Less rounded (was 50px) */
     transition: all 0.3s ease;
     outline: none;
 }
 
-/* Winner Modal */
 .modal {
     position: fixed;
     top: 0;
@@ -410,7 +379,6 @@ header h1 {
     text-transform: uppercase;
     letter-spacing: 5px;
     text-shadow: 0 0 20px currentColor;
-    /* Glow effect */
 }
 
 @keyframes popIn {
@@ -425,7 +393,6 @@ header h1 {
     }
 }
 
-/* Glass Panel Styles */
 .glass-panel {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(16px);
@@ -434,7 +401,6 @@ header h1 {
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
-/* Rules Modal Specifics */
 #rulesModal .modal-content {
     width: 90%;
     max-width: 500px;
@@ -442,11 +408,8 @@ header h1 {
     text-align: left;
     max-height: 80vh;
     overflow-y: auto;
-    /* Hide scrollbar for Chrome, Safari and Opera */
     -ms-overflow-style: none;
-    /* IE and Edge */
     scrollbar-width: none;
-    /* Firefox */
 }
 
 #rulesModal .modal-content::-webkit-scrollbar {
@@ -491,3 +454,4 @@ header h1 {
 .rules-text li {
     margin-bottom: 8px;
 }
+
